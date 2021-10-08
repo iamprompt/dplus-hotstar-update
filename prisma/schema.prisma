@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Asset {
+  contentId Int    @id
+  id        String
+
+  // Asset Basic Info
+  title       String
+  shortTitle  String?
+  engTitle    String?
+  description String?
+
+  // Studio Entity
+  studioId        String?
+  studio          Studio?  @relation(fields: [studioId], references: [id])
+  channelId       String?
+  channel         Channel? @relation(fields: [channelId], references: [id])
+  contentProvider String?
+  productionHouse String?
+
+  // Asset Types
+  entityType  String
+  contentType String?
+  assetType   String?
+  clipType    String?
+
+  // Asset Date
+  startDate     DateTime?
+  endDate       DateTime?
+  broadCastDate DateTime?
+
+  // Additional Metadata
+  genre     String[]
+  AssetLang AssetLang[]
+  year      Int?
+  duration  Int?
+  clipCnt   Int?
+
+  // Images
+  images    String?
+  imageSets String[]
+
+  // Trays
+  AssetTray AssetTray[]
+
+  // Parent Asset
+  assetParent Asset[] @relation("assetParent", references: [contentId])
+  assetChild  Asset[] @relation("assetParent", references: [contentId])
+
+  // Show Metadata
+  seasonCnt  Int?
+  episodeCnt Int?
+
+  // Episode Metadata
+  seasonNo   Int?
+  seasonName String?
+  episodeNo  Int?
+
+  // Optional Metadata
+  supportSimulcast Boolean?
+  encrypted        Boolean?
+}
+
+model Studio {
+  id    String  @id
+  name  String
+  Asset Asset[]
+}
+
+model Channel {
+  id    String  @id
+  name  String
+  Asset Asset[]
+}
+
+model Tray {
+  id        Int         @id
+  title     String
+  engTitle  String?
+  uqId      String?
+  assetIds  String[]
+  AssetTray AssetTray[]
+}
+
+model Lang {
+  id          Int         @id
+  name        String
+  displayName String
+  iso3Code    String
+  assetIds    String[]
+  AssetLang   AssetLang[]
+}
+
+model AssetLang {
+  assetId Int
+  asset   Asset @relation(fields: [assetId], references: [contentId])
+  langId  Int
+  lang    Lang  @relation(fields: [langId], references: [id])
+
+  @@id([assetId, langId])
+}
+
+model AssetTray {
+  assetId Int
+  asset   Asset @relation(fields: [assetId], references: [contentId])
+  trayId  Int
+  tray    Tray  @relation(fields: [trayId], references: [id])
+
+  @@id([assetId, trayId])
+}

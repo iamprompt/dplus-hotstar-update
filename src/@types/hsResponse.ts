@@ -128,6 +128,7 @@ export type AssetsItem = {
   seasonName?: string
   features?: any
   unifiedFeaturesObject?: any
+  productionHouse: string
 }
 
 export type AutoplayObj = {

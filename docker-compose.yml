@@ -4,10 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    volumes:
-      - ./data:/dplus-hs-update/firestore
     environment:
-      - FIRESTORE_EMULATOR_HOST='localhost:8080'
-      - GCLOUD_PROJECT='dplus-hotstar-th'
-      - DISCORD_WEBHOOK_ID=''
-      - DISCORD_WEBHOOK_TOKEN=''
+      - DISCORD_WEBHOOK_ID='${DISCORD_WEBHOOK_ID}'
+      - DISCORD_WEBHOOK_TOKEN='${DISCORD_WEBHOOK_TOKEN}'
+      - DATABASE_URL='${DATABASE_URL}'
