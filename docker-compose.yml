@@ -4,7 +4,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    environment:
-      - DISCORD_WEBHOOK_ID='${DISCORD_WEBHOOK_ID}'
-      - DISCORD_WEBHOOK_TOKEN='${DISCORD_WEBHOOK_TOKEN}'
-      - DATABASE_URL='${DATABASE_URL}'
+    # environment:
+    #   - DISCORD_WEBHOOK_ID='${DISCORD_WEBHOOK_ID}'
+    #   - DISCORD_WEBHOOK_TOKEN='${DISCORD_WEBHOOK_TOKEN}'
+    #   - DATABASE_URL='${DATABASE_URL}'
+    env_file:
+      - .env
